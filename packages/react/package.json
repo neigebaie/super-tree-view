@@ -1,0 +1,66 @@
+{
+  "name": "@super-tree-view/react",
+  "version": "0.1.0",
+  "description": "Slim, accessible, virtualized React tree view with zero runtime dependencies. Checkboxes, keyboard navigation, lazy loading, drag and drop.",
+  "license": "MIT",
+  "author": "neigebaie <paul.serander@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neigebaie/super-tree-view.git",
+    "directory": "packages/react"
+  },
+  "homepage": "https://neigebaie.github.io/super-tree-view/",
+  "keywords": [
+    "react",
+    "tree",
+    "treeview",
+    "tree-view",
+    "headless",
+    "virtualized",
+    "a11y",
+    "checkbox",
+    "drag-and-drop",
+    "shadcn"
+  ],
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./tree.css": "./dist/tree.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.test.json"
+  },
+  "dependencies": {
+    "@super-tree-view/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "jsdom": "^30.1.1",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "tsdown": "^0.23.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

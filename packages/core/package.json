@@ -1,0 +1,52 @@
+{
+  "name": "@super-tree-view/core",
+  "version": "0.1.0",
+  "description": "Zero-dependency, framework-agnostic headless tree view: virtualization, tri-state checkboxes, keyboard & ARIA, lazy loading, drag and drop.",
+  "license": "MIT",
+  "author": "neigebaie <paul.serander@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neigebaie/super-tree-view.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://neigebaie.github.io/super-tree-view/",
+  "keywords": [
+    "tree",
+    "treeview",
+    "tree-view",
+    "headless",
+    "virtualized",
+    "a11y",
+    "checkbox",
+    "drag-and-drop"
+  ],
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./tree.css": "./dist/tree.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.test.json"
+  },
+  "devDependencies": {
+    "tsdown": "^0.23.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

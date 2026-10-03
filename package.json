@@ -1,0 +1,53 @@
+{
+  "name": "super-tree-view-monorepo",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.32.1",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "pnpm --filter \"./packages/*\" build",
+    "dev": "pnpm --filter playground dev",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "pnpm --filter playground test:e2e",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "size": "size-limit",
+    "registry": "node scripts/build-registry.mjs",
+    "changeset": "changeset",
+    "release": "pnpm build && changeset publish"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.15",
+    "@changesets/cli": "^3.0.3",
+    "@size-limit/preset-small-lib": "^14.1.0",
+    "size-limit": "^14.1.0",
+    "typescript": "^6.0.0",
+    "vitest": "^5.0.3",
+    "vite": "^8.3.2",
+    "@types/node": "^24.0.0"
+  },
+  "size-limit": [
+    {
+      "name": "@super-tree-view/core",
+      "path": "packages/core/dist/index.js",
+      "import": "*",
+      "limit": "6 kB"
+    },
+    {
+      "name": "@super-tree-view/react (adapter only)",
+      "path": "packages/react/dist/index.js",
+      "import": "*",
+      "ignore": [
+        "react",
+        "react-dom",
+        "react/jsx-runtime",
+        "@super-tree-view/core"
+      ],
+      "limit": "4 kB"
+    }
+  ]
+}

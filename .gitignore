@@ -1,0 +1,13 @@
+node_modules
+dist
+.next
+next-env.d.ts
+*.tsbuildinfo
+coverage
+test-results
+playwright-report
+apps/playground/public/r
+.DS_Store
+*.log
+.env*
+packages/react/test/.ejected

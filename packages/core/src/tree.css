@@ -1,0 +1,233 @@
+/*
+ * super-tree-view default theme.
+ * Plain CSS, no Tailwind required. Everything lives in a cascade layer, so your own
+ * styles (or Tailwind utilities) win without !important. Tones derive from currentColor,
+ * so the tree adapts to light and dark themes; override the variables to restyle it.
+ */
+@layer stv {
+  .stv-tree {
+    --stv-row-height: 32px;
+    --stv-indent: 16px;
+    --stv-radius: 6px;
+    --stv-accent: #2563eb;
+    --stv-accent-fg: #fff;
+    --stv-hover: color-mix(in oklab, currentColor 6%, transparent);
+    --stv-selected: color-mix(in oklab, var(--stv-accent) 16%, transparent);
+    --stv-guide: color-mix(in oklab, currentColor 14%, transparent);
+    --stv-muted: color-mix(in oklab, currentColor 60%, transparent);
+    --stv-mark: color-mix(in oklab, #facc15 45%, transparent);
+    position: relative;
+    overflow: auto;
+    outline: none;
+    overscroll-behavior: contain;
+  }
+
+  .stv-inner {
+    position: relative;
+  }
+
+  .stv-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-sizing: border-box;
+    height: var(--stv-row-height);
+    padding-inline: calc(var(--stv-depth, 0) * var(--stv-indent) + 4px) 4px;
+    border-radius: var(--stv-radius);
+    white-space: nowrap;
+    cursor: default;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .stv-tree[data-virtual] .stv-row {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+  }
+
+  .stv-row:hover {
+    background-color: var(--stv-hover);
+  }
+
+  .stv-row[data-selected] {
+    background-color: var(--stv-selected);
+  }
+
+  .stv-row:focus-visible {
+    outline: 2px solid var(--stv-accent);
+    outline-offset: -2px;
+  }
+
+  .stv-row[data-disabled] {
+    opacity: 0.5;
+  }
+
+  .stv-row[data-dragging] {
+    opacity: 0.4;
+  }
+
+  /* Indent guides: one gradient, no extra DOM. */
+  .stv-tree[data-guides] .stv-row {
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--stv-guide) 0 1px,
+      transparent 1px var(--stv-indent)
+    );
+    background-size: calc(var(--stv-depth, 0) * var(--stv-indent)) 100%;
+    background-position: calc(var(--stv-indent) / 2 + 4px) 0;
+    background-repeat: no-repeat;
+  }
+
+  .stv-toggle {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    color: var(--stv-muted);
+    transition: transform 0.15s ease;
+  }
+
+  .stv-row[data-folder] .stv-toggle:hover {
+    background-color: var(--stv-hover);
+  }
+
+  .stv-row[data-expanded] .stv-toggle {
+    transform: rotate(90deg);
+  }
+
+  .stv-row[data-loading] .stv-toggle {
+    transform: none;
+  }
+
+  .stv-tree[dir="rtl"] .stv-row:not([data-expanded]) .stv-toggle {
+    transform: scaleX(-1);
+  }
+
+  .stv-checkbox {
+    display: inline-grid;
+    flex: none;
+    place-items: center;
+    box-sizing: border-box;
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid color-mix(in oklab, currentColor 45%, transparent);
+    border-radius: 4px;
+  }
+
+  .stv-row[data-checked="true"] .stv-checkbox,
+  .stv-row[data-checked="mixed"] .stv-checkbox {
+    border-color: var(--stv-accent);
+    background-color: var(--stv-accent);
+    color: var(--stv-accent-fg);
+  }
+
+  .stv-icon {
+    display: inline-flex;
+    flex: none;
+    color: var(--stv-muted);
+  }
+
+  .stv-label {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .stv-mark {
+    border-radius: 2px;
+    background-color: var(--stv-mark);
+    color: inherit;
+  }
+
+  .stv-actions {
+    display: flex;
+    flex: none;
+    gap: 2px;
+    opacity: 0;
+  }
+
+  .stv-row:hover .stv-actions,
+  .stv-row:focus .stv-actions,
+  .stv-row:focus-within .stv-actions {
+    opacity: 1;
+  }
+
+  @media (hover: none) {
+    .stv-actions {
+      opacity: 1;
+    }
+  }
+
+  .stv-spinner {
+    width: 10px;
+    height: 10px;
+    border: 2px solid currentColor;
+    border-inline-end-color: transparent;
+    border-radius: 50%;
+    animation: stv-spin 0.6s linear infinite;
+  }
+
+  /* Drop indicators */
+  .stv-row[data-drop="before"]::after,
+  .stv-row[data-drop="after"]::after {
+    content: "";
+    position: absolute;
+    inset-inline: calc(var(--stv-depth, 0) * var(--stv-indent) + 4px) 4px;
+    height: 2px;
+    border-radius: 1px;
+    background-color: var(--stv-accent);
+    pointer-events: none;
+  }
+
+  .stv-row[data-drop="before"]::after {
+    top: -1px;
+  }
+
+  .stv-row[data-drop="after"]::after {
+    bottom: -1px;
+  }
+
+  .stv-row[data-drop="inside"] {
+    background-color: var(--stv-selected);
+    outline: 2px solid var(--stv-accent);
+    outline-offset: -2px;
+  }
+
+  .stv-drag-preview {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 50;
+    padding: 2px 8px;
+    border-radius: var(--stv-radius);
+    background-color: var(--stv-accent);
+    color: var(--stv-accent-fg);
+    font-size: 12px;
+    line-height: 20px;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  @keyframes stv-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stv-toggle {
+      transition: none;
+    }
+
+    .stv-spinner {
+      animation-duration: 1.5s;
+    }
+  }
+}
